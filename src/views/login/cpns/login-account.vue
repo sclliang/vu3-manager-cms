@@ -42,7 +42,6 @@ const loginAction = (checkPwd: boolean) => {
       }
       // 登录逻辑
       store.dispatch('login/accountLoginAction', account.value)
-      console.log('验证通过')
     }
   })
 }

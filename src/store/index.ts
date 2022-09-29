@@ -1,6 +1,7 @@
-import { createStore } from 'vuex'
-import { IRootState } from './type'
+import { createStore, Store, useStore as useVuexStore } from 'vuex'
+import { IRootState, IStoreType } from './type'
 import login from './login'
+
 export default createStore<IRootState>({
   state: () => ({
     name: 'sclliang',
@@ -11,3 +12,6 @@ export default createStore<IRootState>({
   actions: {},
   modules: { login }
 })
+export function useStore(): Store<IStoreType> {
+  return useVuexStore()
+}

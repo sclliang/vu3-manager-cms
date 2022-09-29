@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import { IRootState } from '../type'
 import { ILoginState } from './type'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 import {
   accountLoginRequest,
   requestUserInfoById,
@@ -14,7 +15,7 @@ const loginModule: Module<ILoginState, IRootState> = {
   state: () => ({
     token: LocalCache.getItem('token') || '',
     userInfo: LocalCache.getItem('userInfo') || {},
-    userMenus: LocalCache.getItem('userMenus') || {}
+    userMenus: LocalCache.getItem('userMenus') || []
   }),
   mutations: {
     setToken(state, token: string) {
@@ -27,10 +28,17 @@ const loginModule: Module<ILoginState, IRootState> = {
     setuserMenus(state, userMenus) {
       state.userMenus = userMenus
     },
+    // 动态添加路由逻辑
+    addRoute(state) {
+      const routes = mapMenusToRoutes(state.userMenus)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+    },
     delToken(state) {
       state.token = ''
       state.userInfo = {}
-      state.userMenus = {}
+      state.userMenus = []
       LocalCache.removeItem('token')
       LocalCache.removeItem('userInfo')
       LocalCache.removeItem('userMenus')
@@ -46,14 +54,14 @@ const loginModule: Module<ILoginState, IRootState> = {
       const userInfoResult = await requestUserInfoById(id)
       const userInfo = userInfoResult.data.data
       commit('setUserInfo', userInfo)
-      console.log(userInfo)
+
       LocalCache.setItem('userInfo', userInfo)
 
       // 请求用户菜单
       const userMenuResult = await requestUserMenuById(id)
       const userMenus = userMenuResult.data.data
       commit('setuserMenus', userMenus)
-      console.log(userMenus)
+
       LocalCache.setItem('userMenus', userMenus)
       // 跳转到首页
       router.push('/main')

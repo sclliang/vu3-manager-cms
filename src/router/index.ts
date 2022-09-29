@@ -9,11 +9,19 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/main/analysis/overview'
   },
   {
     path: '/main',
+    name: 'main',
+    // redirect: '/main/analysis/overview'
     component: () => import('@/views/main/index.vue')
+    // children: []
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: () => import('@/views/main/not-found/index.vue')
   }
 ]
 
@@ -21,6 +29,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+// 导航守卫
 router.beforeEach((to) => {
   const token = LocalCache.getItem('token')
   if (token) {
