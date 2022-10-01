@@ -1,5 +1,5 @@
 import sclRequest from '../index'
-import { IAccount, IDataType, IUserInfo } from './type'
+import { IAccount, IDataType, IUserInfo } from '../type'
 export function accountLoginRequest(account: IAccount) {
   return sclRequest.post<IDataType<IUserInfo>>({
     url: '/login',

@@ -21,13 +21,13 @@ class Service {
       return response
     })
   }
-  request<T>(config: AxiosRequestConfig) {
+  request<T = any>(config: AxiosRequestConfig) {
     return this.instance.request<T>(config)
   }
-  post<T>(config: AxiosRequestConfig) {
+  post<T = any>(config: AxiosRequestConfig) {
     return this.request<T>({ ...config, method: 'POST' })
   }
-  get<T>(config: AxiosRequestConfig) {
+  get<T = any>(config: AxiosRequestConfig) {
     return this.request<T>({ ...config, method: 'GET' })
   }
 }

@@ -12,7 +12,9 @@
           ></nav-header>
         </el-header>
         <el-main class="page-main">
-          <router-view></router-view>
+          <div class="main-page-app">
+            <router-view></router-view>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -53,7 +55,10 @@ const changeIscollapse = () => {
         align-items: center;
       }
       .page-main {
-        background-color: #eef0f4;
+        background-color: #f5f5f5;
+        .main-page-app {
+          background-color: #fff;
+        }
       }
     }
   }

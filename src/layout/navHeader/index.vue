@@ -5,12 +5,7 @@
       <el-icon :size="30" class="icon" @click="handleFoldClick">
         <component :is="isCollapse ? 'Expand' : 'Fold'"></component>
       </el-icon>
-      <el-breadcrumb class="crumb-box">
-        <el-breadcrumb-item class="crumb-left">homepage</el-breadcrumb-item>
-        <el-breadcrumb-item class="crumb-right" :to="{ path: '/' }"
-          >promotion management</el-breadcrumb-item
-        >
-      </el-breadcrumb>
+      <breadcrumb :breadcrumbs="breadcrumbs"></breadcrumb>
       <!-- <el-icon></el-icon> -->
     </div>
     <div class="nav-right">
@@ -38,10 +33,12 @@
 </template>
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
-import { defineEmits, defineProps } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-
+import { computed, defineEmits, defineProps } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import breadcrumb from '@/components/breadcrumb/index.vue'
+// import { IBreadcrumb } from '@/components/breadcrumb/type'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
 defineProps({
   isCollapse: {
     type: Boolean,
@@ -62,6 +59,15 @@ const logout = () => {
     type: 'success'
   })
 }
+
+// 面包屑
+const route = useRoute()
+
+const breadcrumbs = computed(() => {
+  const userMenus = store.state.login.userMenus
+  const currentPath = route.path
+  return pathMapBreadcrumbs(userMenus, currentPath)
+})
 </script>
 <style lang="less" scoped>
 .nav-header-container {
@@ -78,18 +84,6 @@ const logout = () => {
   .nav-left {
     display: flex;
     align-items: center;
-    .crumb-box {
-      margin-left: 10px;
-      .crumb-left {
-        font-weight: bold;
-        .el-breadcrumb__inner {
-          color: #000;
-        }
-      }
-      .crumb-right {
-        color: #999;
-      }
-    }
   }
   .nav-right {
     .el-dropdown-link {

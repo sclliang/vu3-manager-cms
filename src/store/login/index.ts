@@ -1,13 +1,12 @@
 import { Module } from 'vuex'
-import { IRootState } from '../type'
-import { ILoginState } from './type'
+import { IRootState, ILoginState } from '../type'
 import { mapMenusToRoutes } from '@/utils/map-menus'
 import {
   accountLoginRequest,
   requestUserInfoById,
   requestUserMenuById
 } from '@/service/login/login'
-import { IAccount } from '@/service/login/type'
+import { IAccount } from '@/service/type'
 import LocalCache from '@/utils/cache'
 import router from '@/router'
 const loginModule: Module<ILoginState, IRootState> = {
@@ -63,8 +62,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       commit('setuserMenus', userMenus)
 
       LocalCache.setItem('userMenus', userMenus)
+
+      commit('addRoute')
       // 跳转到首页
-      router.push('/main')
+      router.push('/')
     }
   }
 }

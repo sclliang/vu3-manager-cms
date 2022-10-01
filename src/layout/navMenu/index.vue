@@ -5,7 +5,7 @@
       <span class="title" v-if="!isCollapse">Vue3+TS</span>
     </div>
     <el-menu
-      default-active="1"
+      :default-active="currentRoute"
       background-color="#304542"
       active-text-color="#ffd04b"
       text-color="#fff"
@@ -13,6 +13,7 @@
       :collapse="isCollapse"
       :collapse-transition="false"
       class="menu-box"
+      unique-opened
     >
       <template v-for="item in userMenus" :key="item.id">
         <template v-if="item.type === 1">
@@ -42,9 +43,15 @@
 <script lang="ts" setup>
 import { computed, defineProps } from 'vue'
 import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
 const store = useStore()
 const userMenus = computed(() => {
   return store.state.login.userMenus
+})
+// 动态计算当前路由地址currentRoute
+const route = useRoute()
+const currentRoute = computed(() => {
+  return route.fullPath
 })
 defineProps({
   isCollapse: {
